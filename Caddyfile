@@ -1,0 +1,37 @@
+{
+	storage file_system {
+		root ./caddy
+	}
+}
+
+caddy.arno-scw.fr {
+	reverse_proxy http://127.0.0.1:8080
+}
+
+(composite-log) {
+	log {
+		output file ./logs/composite.log
+		format transform "{ts} - {args[0]} - {request>uri}" {
+			time_format "15:04"
+		}
+	}
+}
+
+{$WEATHERURL} {
+	reverse_proxy https://wttr.in
+	import composite-log weather
+}
+
+{$GETIPURL} {
+	reverse_proxy https://api4.my-ip.io
+	import composite-log get-ip
+}
+
+{$HELLOURL} {
+	reverse_proxy https://127.0.0.1:8443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+	import composite-log hello-ssl
+}

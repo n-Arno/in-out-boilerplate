@@ -1,0 +1,4 @@
+supervisor
+fastapi[standard]
+aiohttp
+python-dotenv

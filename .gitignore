@@ -1,0 +1,5 @@
+logs/*.log
+server.pem
+__pycache__
+caddy
+supervisord.pid
